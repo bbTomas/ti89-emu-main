@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TI-89 Emulator</title>
+    <meta name="keywords" content="TI-89,Emulator,calculator">
+    <meta name="description" content="Use a TI-89 online with your Desktop, Tablet, or Mobile device.">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="en-US">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="img/ti89-icon.png"/>
+    <link rel="apple-touch-precomposed-icon" href="img/ti89-icon.png"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/keyboard.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body onload="bodyOnload()">
+    <!-- The visible UI (display panel + HW1 keyboard skin with hit areas) is built
+         dynamically by calccontainer.js. The elements below are the minimum that the
+         emulator core still references by id during initialisation. -->
+    <div id="calccontainer" style="position:relative">
+        <canvas height="100" width="160" id="screen" style="display: none">This website requires a browser with canvas support and Javascript enabled.</canvas>
+        <img style="display: none" id="calcimg">
+        <img style="display: none" id="calcimg2">
+        <map id="calcmap" name="calcmap"></map>
+    </div>
+    <div id="textandbuttons" style="display: none">
+        <form>
+            <input checked="checked" id="smallskin" name="skin_type" value="1" onclick="javascript:ui.setSkin(1)" type="radio">1:1&nbsp;&nbsp;
+            <input id="largeskin" name="skin_type" value="2" onclick="javascript:ui.setSkin(2)" type="radio">2:1
+            <input id="xlargeskin" name="skin_type" value="3" onclick="javascript:ui.setSkin(3)" type="radio">3:1
+            <input id="xxlargeskin" name="skin_type" value="4" onclick="javascript:ui.setSkin(4)" type="radio">4:1
+        </form>
+    </div>
+    <div id="progressbar"><div></div></div>
+    <script type="text/javascript" src="rom/ti89rom.js" id="rom"></script>
+    <script type="text/javascript" src="js/v12.js" id="simulator"></script>
+    <script type="text/javascript" src="js/calccontainer.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* Minimal styles for the TI-89 emulator.
+   The keyboard/display skin is built and styled dynamically by
+   calccontainer.js (initHw1Skin). Only the few rules the emulator core and
+   the loading bar still rely on remain here. */
+
+body {
+  background-color: #3f3b30;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Safari */
+     -moz-user-select: none;   /* Firefox */
+      -ms-user-select: none;   /* IE/Edge */
+          user-select: none;
+}
+
+canvas {
+  image-rendering: pixelated;
+}
+
+/* Loading bar (its position/size is set by the skin; these give it its look) */
+#progressbar {
+  position: absolute;
+  display: none;
+  background-color: transparent;
+  border: 1px solid #4d5139;
+  z-index: 21;
+}
+#progressbar > div {
+  background-color: #4d5139;
+  width: 0%;
+  height: 20px;
+  border-radius: 0px;
+}
