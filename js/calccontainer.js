@@ -1179,7 +1179,7 @@ $(function() {
   // Keys are given by their key-matrix number(s); listing several numbers in
   // one step presses them together (e.g. alpha+letter). Everything below is
   // meant to be tweaked freely.
-  var startupMacroEnabled = true;      // set to false to turn the macro off
+  var startupMacroEnabled = false;      // set to false to turn the macro off
   var startupMacroInitialDelay = 6000; // ms to wait after the emulator starts (OS boot time)
   var startupMacroHold = 80;           // ms each key is held down before release
 
@@ -1191,37 +1191,7 @@ $(function() {
     { keys: [10],    gap: 500 }, // -
     { keys: [15],    gap: 200 }, // F5
     { keys: [26],    gap: 200 }, // 5
-    { keys: [48],    gap: 500 }, // Esc
-
-    { keys: [45],    gap: 100 }, // x    [x\inst()]
-    { keys: [4],     gap: 100 }, // Alt -> 2nd
-    { keys: [25],    gap: 100 }, // backslash
-    { keys: [7, 19], gap: 100 }, // i  (alpha + key 19)
-    { keys: [7, 18], gap: 100 }, // n  (alpha + key 18)
-    { keys: [7, 17], gap: 100 }, // s  (alpha + key 17)
-    { keys: [21],    gap: 100 }, // t
-    { keys: [36],    gap: 100 }, // (
-    { keys: [28],    gap: 100 }, // )
-    { keys: [8],     gap: 3000 }, // ENTER
-
-    { keys: [22],    gap: 100 }, // backspace (<-)   [clear last 2 lines]
-    { keys: [0],     gap: 100 }, // UP (kurzor nahoru)
-    { keys: [22],    gap: 100 },  // backspace (<-)
-
-	{ keys: [6],     gap: 200 },  // diamond   [EQW shortcuds]
-	{ keys: [40],    gap: 200 },  // APPS
-	{ keys: [8],    gap: 200 },  // ENTER
-	{ keys: [8],    gap: 500 },  // ENTER
-	{ keys: [47],   gap: 200 },  // F1
-	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
-	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
-	{ keys: [8],    gap: 500 },  // ENTER
-	{ keys: [2],    gap: 200 },  // DOWN (kurzor dolu)
-	{ keys: [3],    gap: 200 },  // RIGHT (kurzor doprava)
-	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
-	{ keys: [8],    gap: 200 },  // ENTER
-	{ keys: [8],    gap: 200 },  // ENTER
-	{ keys: [46],   gap: 200 }  // HOME
+    { keys: [48],    gap: 500 } // Esc
   ];
 
   function pressMacroKey(keys) {
