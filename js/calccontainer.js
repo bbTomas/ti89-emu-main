@@ -1148,15 +1148,9 @@ function bodyOnload() {
   memory_loaded = true;
 }
 $(function() {
-  var v12m_size = 5852605;
-  var v12_size = 319305;
-  var v12_total_size = v12m_size + v12_size;
-  var v12_loading_percent = 75;
   var emu;
   var ui;
   var link;
-  var progress_bar_height = 20;
-  var progress_bar_left = 10;
   //<![CDATA[
     function reset() {
       d0 = 0;
@@ -1179,14 +1173,13 @@ $(function() {
       ram = new Uint16Array(131072);
   };
   //]]>
-  var loadingMemory = false;
 
   // ===================== Startup key macro =====================
   // After the OS has booted, automatically press a sequence of TI-89 keys.
   // Keys are given by their key-matrix number(s); listing several numbers in
   // one step presses them together (e.g. alpha+letter). Everything below is
   // meant to be tweaked freely.
-  var startupMacroEnabled = false;      // set to false to turn the macro off
+  var startupMacroEnabled = true;      // set to false to turn the macro off
   var startupMacroInitialDelay = 6000; // ms to wait after the emulator starts (OS boot time)
   var startupMacroHold = 80;           // ms each key is held down before release
 
@@ -1199,6 +1192,36 @@ $(function() {
     { keys: [15],    gap: 200 }, // F5
     { keys: [26],    gap: 200 }, // 5
     { keys: [48],    gap: 500 }, // Esc
+
+    { keys: [45],    gap: 100 }, // x    [x\inst()]
+    { keys: [4],     gap: 100 }, // Alt -> 2nd
+    { keys: [25],    gap: 100 }, // backslash
+    { keys: [7, 19], gap: 100 }, // i  (alpha + key 19)
+    { keys: [7, 18], gap: 100 }, // n  (alpha + key 18)
+    { keys: [7, 17], gap: 100 }, // s  (alpha + key 17)
+    { keys: [21],    gap: 100 }, // t
+    { keys: [36],    gap: 100 }, // (
+    { keys: [28],    gap: 100 }, // )
+    { keys: [8],     gap: 3000 }, // ENTER
+
+    { keys: [22],    gap: 100 }, // backspace (<-)   [clear last 2 lines]
+    { keys: [0],     gap: 100 }, // UP (kurzor nahoru)
+    { keys: [22],    gap: 100 },  // backspace (<-)
+
+	{ keys: [6],     gap: 200 },  // diamond   [EQW shortcuds]
+	{ keys: [40],    gap: 200 },  // APPS
+	{ keys: [8],    gap: 200 },  // ENTER
+	{ keys: [8],    gap: 500 },  // ENTER
+	{ keys: [47],   gap: 200 },  // F1
+	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
+	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
+	{ keys: [8],    gap: 500 },  // ENTER
+	{ keys: [2],    gap: 200 },  // DOWN (kurzor dolu)
+	{ keys: [3],    gap: 200 },  // RIGHT (kurzor doprava)
+	{ keys: [0],    gap: 200 },  // UP (kurzor nahoru)
+	{ keys: [8],    gap: 200 },  // ENTER
+	{ keys: [8],    gap: 200 },  // ENTER
+	{ keys: [46],   gap: 200 }  // HOME
   ];
 
   function pressMacroKey(keys) {
@@ -1608,20 +1631,12 @@ $(function() {
       emu.setRom(rom);
     }
     emu.setReset(reset);
-    var progress_bar = $('#progressbar div');
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 10 / 100) + '%');
     ui.setEmu(emu);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 20 / 100) + '%');
     ui.setLink(link);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 30 / 100) + '%');
     emu.setUI(ui);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 40 / 100) + '%');
     emu.setLink(link);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 50 / 100) + '%');
     link.setEmu(emu);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 60 / 100) + '%');
     link.setUI(ui);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 70 / 100) + '%');    
     emu.initemu();
     // Auto re-align the display frame, darkened mask and F1-F5 keys once the
     // emulator has initialised and painted its first frame. This replaces the
@@ -1632,18 +1647,8 @@ $(function() {
     requestAnimationFrame(adjustComponentsSize);
     setTimeout(adjustComponentsSize, 300);
     setTimeout(adjustComponentsSize, 1200);
-    progress_bar.css('width', (v12_loading_percent + (100 - v12_loading_percent) * 80 / 100) + '%');
     $('#calccontainer #calcback').css('display', "block");
     $('#calccontainer #calcsceen').css('display', "block");
-    var per = v12_loading_percent + (100 - v12_loading_percent) * 80 / 100;
-    var timer = setInterval(function () {
-      progress_bar.css('width', per + '%');
-      if (per >= 100) {
-        clearInterval(timer);
-        fadeoutProgressBar();
-      }
-      per += (100 - v12_loading_percent) * 0.5 / 100;
-    }, 50);
 
     // Restore a previously saved machine state if one exists (and matches this
     // ROM); otherwise treat it as a fresh boot and run the startup key macro.
@@ -1663,29 +1668,11 @@ $(function() {
       loadSimulator();
       return;
     }
-    lscache.addProgressHandler(function(evt) {
-      $('#progressbar div').css('width', ((evt.loaded / v12_total_size) * 100 * v12_loading_percent / 100) + '%');
-    }).require({ url: 'rom/ti89rom.js' }).then(function () {
-      lscache.addProgressHandler(function(evt) {
-        $('#progressbar div').css('width', (((v12m_size + evt.loaded) / v12_total_size) * 100 * v12_loading_percent / 100) + '%');
-      }).require({ url: 'js/v12.js' }).then(function () {
+    lscache.require({ url: 'rom/ti89rom.js' }).then(function () {
+      lscache.require({ url: 'js/v12.js' }).then(function () {
         loadSimulator();
       });
     });
-  }
-  function fadeoutProgressBar() {
-    var el = $("#progressbar");
-    el.css("opacity", 1);
-    var op = 1;
-    var timer = setInterval(function () {
-      el.css("display", "none");
-      if (op <= 0) {
-        clearInterval(timer);
-        loadingMemory = true;
-      }
-      op -= 0.05;
-      el.css("opacity", op);
-    }, 50);
   }
   var displayStyle = 2;
 //   const calcContainerWidth1 = 10480; const calcContainerLeft1 = 1250; const calcContainerRight1 = 1330;
@@ -1788,7 +1775,6 @@ $(function() {
       '#ti89-display{position:relative;background:#0a0d0b;border:1px solid #000;box-sizing:border-box;overflow:hidden;}' +
       '#ti89-display #screen{display:block !important;position:absolute !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;image-rendering:pixelated;image-rendering:crisp-edges;background:#c7e6bf;}' +
       '#ti89-display #ti89-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(118,124,88,0.65);}' +
-      '#ti89-display #progressbar{position:absolute;left:10%;top:44%;width:80%;z-index:3;}' +
       '#ti89-keyboard{position:relative;}' +
       '#ti89-keyboard img{display:block;width:100%;height:100%;pointer-events:none;user-select:none;-webkit-user-drag:none;}' +
       '#ti89-hits{position:absolute;inset:0;}' +
@@ -1808,7 +1794,6 @@ $(function() {
 
     var scr=document.getElementById('screen'); if(scr) disp.appendChild(scr);
     var tint=document.createElement('div'); tint.id='ti89-tint'; disp.appendChild(tint);
-    var pbar=document.getElementById('progressbar'); if(pbar) disp.appendChild(pbar);
 
     KEYS.forEach(function(k){
       var sk=k[1];
@@ -1862,7 +1847,6 @@ $(function() {
     // }
     $('#calccontainer #calcimg2').css('display', "block");
     $('#keyboardcontainer').css('display', 'block');
-    $('#progressbar').css('display', 'block');
   }
   displayElements();
   downloadV12MV12();

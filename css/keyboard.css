@@ -15,18 +15,3 @@ body {
 canvas {
   image-rendering: pixelated;
 }
-
-/* Loading bar (its position/size is set by the skin; these give it its look) */
-#progressbar {
-  position: absolute;
-  display: none;
-  background-color: transparent;
-  border: 1px solid #4d5139;
-  z-index: 21;
-}
-#progressbar > div {
-  background-color: #4d5139;
-  width: 0%;
-  height: 20px;
-  border-radius: 0px;
-}
